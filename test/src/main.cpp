@@ -2,20 +2,6 @@
 #include <backends/window.h>
 #include <utilities/logger.h>
 
-class TestHandleHook : public SealWindow::SealWindowHookHandleEvent
-{
-public:
-    TestHandleHook() : logger("TestHandleHook") {}
-
-    void handleEventsHook(SDL_Event &event) override
-    {
-        logger.info("Handling events...");
-    }
-
-private:
-    SealLogger::Logger logger;
-};
-
 int main()
 {
     SealLogger::Logger logger("SealEngineMain");
@@ -28,9 +14,6 @@ int main()
     }
 
     logger.ok("Window spawned successfully.");
-    TestHandleHook testHandleHook;
-    window.attachHandleEventHook(&testHandleHook);
-    logger.info("Created test handle hook.");
 
     while (window.isRunning())
     {
