@@ -10,7 +10,7 @@ SDL2_LDFLAGS := $(shell sdl2-config --libs)
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -Wextra -pedantic -Werror -std=c++11 -fPIC $(SDL2_CFLAGS) -Iinclude/
+CXXFLAGS := -Wall -Wextra -pedantic -Werror -std=c++20 -fPIC $(SDL2_CFLAGS) -Iinclude/
 LDFLAGS := -shared $(SDL2_LDFLAGS)
 
 # Find all .cpp files recursively

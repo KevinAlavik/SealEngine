@@ -36,6 +36,9 @@ namespace SealWindow
         SDL_Renderer *getRenderer() const;
         void attachHandleEventHook(SealWindowHookHandleEvent *hook);
         void attachPresentHook(SealWindowHookPresent *hook);
+        int getWidth() const;
+        int getHeight() const;
+        bool verbose;
 
     private:
         std::string title;

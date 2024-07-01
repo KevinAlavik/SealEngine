@@ -18,6 +18,8 @@ namespace SealEngine
         void Spawn(std::function<void()> setupFunction, std::function<void()> updateFunction);
         void Quit();
         SealWindow::Window *GetWindow();
+        int GetWindowWidth() const;
+        int GetWindowHeight() const;
 
     private:
         SealWindow::Window *window;

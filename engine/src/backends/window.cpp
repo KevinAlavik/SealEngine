@@ -4,7 +4,7 @@ namespace SealWindow
 {
 
     Window::Window(const std::string &windowTitle, int windowWidth, int windowHeight)
-        : title(windowTitle), width(windowWidth), height(windowHeight), running(false), window(nullptr), renderer(nullptr), logger("SealWindow"), handleEventHook(nullptr), presentHook(nullptr)
+        : verbose(false), title(windowTitle), width(windowWidth), height(windowHeight), running(false), window(nullptr), renderer(nullptr), logger("SealWindow"), handleEventHook(nullptr), presentHook(nullptr)
     {
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
@@ -25,7 +25,7 @@ namespace SealWindow
             window = nullptr;
         }
         SDL_Quit();
-        running = false;    
+        running = false;
     }
 
     bool Window::spawn()
@@ -37,7 +37,7 @@ namespace SealWindow
             return false;
         }
 
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (!renderer)
         {
             logger.error("Renderer could not be created! SDL_Error: " + std::string(SDL_GetError()));
@@ -106,6 +106,16 @@ namespace SealWindow
     void Window::attachPresentHook(SealWindowHookPresent *hook)
     {
         presentHook = hook;
+    }
+
+    int Window::getWidth() const
+    {
+        return width;
+    }
+
+    int Window::getHeight() const
+    {
+        return height;
     }
 
 } // namespace SealWindow

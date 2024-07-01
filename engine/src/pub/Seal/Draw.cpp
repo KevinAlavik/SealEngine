@@ -5,7 +5,6 @@ namespace SealEngineDraw
 {
     Drawer::Drawer(SealEngine::Window *window, SealEngine::Logger *logger) : window(window), logger(logger)
     {
-        logger->Log(SealEngine::Logger::LogLevel::INFO, "Drawer registered!");
     }
 
     Drawer::~Drawer() = default;

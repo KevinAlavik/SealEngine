@@ -25,11 +25,27 @@ namespace SealEngine
 
         setupFunction();
 
+        using namespace std::chrono;
+        auto lastTime = high_resolution_clock::now();
+
         while (window->isRunning())
         {
             window->handleEvents();
             updateFunction();
             window->present();
+
+            auto currentTime = high_resolution_clock::now();
+            duration<float> elapsedTime = currentTime - lastTime;
+            lastTime = currentTime;
+
+            float fps = 1.0f / elapsedTime.count();
+
+            std::ostringstream fpsStream;
+            fpsStream << std::fixed << std::setprecision(2) << "FPS: " << fps;
+            std::string fpsString = fpsStream.str();
+
+            if (window->verbose)
+                logger->debug(fpsString);
         }
     }
 
@@ -42,6 +58,16 @@ namespace SealEngine
     SealWindow::Window *Window::GetWindow()
     {
         return window;
+    }
+
+    int Window::GetWindowWidth() const
+    {
+        return window->getWidth();
+    }
+
+    int Window::GetWindowHeight() const
+    {
+        return window->getHeight();
     }
 
     // Logger
