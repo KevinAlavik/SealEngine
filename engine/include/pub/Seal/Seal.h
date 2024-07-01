@@ -1,11 +1,6 @@
 #ifndef SEAL_H
 #define SEAL_H
 
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
 #include <functional>
 #include <chrono>
 #include <thread>
@@ -22,10 +17,11 @@ namespace SealEngine
         ~Window();
         void Spawn(std::function<void()> setupFunction, std::function<void()> updateFunction);
         void Quit();
+        SealWindow::Window *GetWindow();
 
     private:
-        SealWindow::Window window;
-        SealLogger::Logger logger;
+        SealWindow::Window *window;
+        SealLogger::Logger *logger;
     };
 
     class Logger
@@ -41,10 +37,11 @@ namespace SealEngine
         };
 
         Logger(const std::string &name);
+        ~Logger();
         void Log(LogLevel level, const std::string &message);
 
     private:
-        SealLogger::Logger logger;
+        SealLogger::Logger *logger;
     };
 
     class Timer
