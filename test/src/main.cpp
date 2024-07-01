@@ -12,6 +12,7 @@ void Update()
 {
     logger.Log(SealEngine::Logger::LogLevel::INFO, "Update function called");
     SealEngine::Timer::SleepMilliseconds(100);
+    window.Quit();
 }
 
 int main()

@@ -25,6 +25,7 @@ namespace SealWindow
             window = nullptr;
         }
         SDL_Quit();
+        running = false;    
     }
 
     bool Window::spawn()

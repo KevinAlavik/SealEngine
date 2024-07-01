@@ -21,6 +21,7 @@ namespace SealEngine
         Window(const std::string &windowTitle, int windowWidth, int windowHeight);
         ~Window();
         void Spawn(std::function<void()> setupFunction, std::function<void()> updateFunction);
+        void Quit();
 
     private:
         SealWindow::Window window;

@@ -30,6 +30,11 @@ namespace SealEngine
         }
     }
 
+    void Window::Quit()
+    {
+        window.~Window();
+    }
+
     Logger::Logger(const std::string &name) : logger(SealLogger::Logger(name))
     {
     }
