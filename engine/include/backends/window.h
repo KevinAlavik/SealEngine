@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <string>
-#include <utilities/logger.h>
+#include "../utilities/logger.h"
 
 namespace SealWindow
 {

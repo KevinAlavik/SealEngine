@@ -8,7 +8,7 @@ TARGET := $(BIN_DIR)/$(GAME_NAME)
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -Wextra -pedantic -Werror -std=c++11 -I../engine/include
+CXXFLAGS := -Wall -Wextra -pedantic -Werror -std=c++11 -I../engine/include/pub
 LDFLAGS := -L$(LIB_DIR) -lsealengine
 
 # Directories

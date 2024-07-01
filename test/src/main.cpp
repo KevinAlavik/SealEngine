@@ -1,26 +1,22 @@
-#include <iostream>
-#include <backends/window.h>
-#include <utilities/logger.h>
+#include <Seal/Seal.h>
+
+SealEngine::Logger logger("SealEngineTest");
+SealEngine::Window window("SealEngine Test", 800, 600);
+
+void Setup()
+{
+    logger.Log(SealEngine::Logger::LogLevel::INFO, "Setup function called");
+}
+
+void Update()
+{
+    logger.Log(SealEngine::Logger::LogLevel::INFO, "Update function called");
+    SealEngine::Timer::SleepMilliseconds(100);
+}
 
 int main()
 {
-    SealLogger::Logger logger("SealEngineMain");
-    SealWindow::Window window("Seal Test", 800, 600);
-
-    if (!window.spawn())
-    {
-        logger.fatal("Failed to spawn window.");
-        return -1;
-    }
-
-    logger.ok("Window spawned successfully.");
-
-    while (window.isRunning())
-    {
-        window.handleEvents();
-        window.clear(0, 0, 0, 255);
-        window.present();
-    }
-
+    logger.Log(SealEngine::Logger::LogLevel::INFO, "Spawning window.");
+    window.Spawn(Setup, Update);
     return 0;
 }

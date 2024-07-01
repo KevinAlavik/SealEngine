@@ -35,7 +35,7 @@ namespace SealLogger
         std::string loggerName;
 
         void log(LogLevel level, const std::string &message);
-        void printLog(LogLevel level, const std::string &message, const std::string &prefix, const std::string &color);
+        void printLog(const std::string &message, const std::string &prefix, const std::string &color);
         std::string getCurrentDateTime();
     };
 

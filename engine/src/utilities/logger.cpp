@@ -1,7 +1,41 @@
-#include <utilities/logger.h>
+#include <iostream>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 namespace SealLogger
 {
+    enum class LogLevel
+    {
+        INFO,
+        OK,
+        DEBUG,
+        WARNING,
+        ERROR,
+        FATAL
+    };
+
+    class Logger
+    {
+    public:
+        Logger(const std::string &loggerNameSpecifier = "");
+        ~Logger();
+
+        void info(const std::string &message);
+        void ok(const std::string &message);
+        void debug(const std::string &message);
+        void warning(const std::string &message);
+        void error(const std::string &message);
+        void fatal(const std::string &message);
+
+    private:
+        std::string loggerName;
+
+        void log(LogLevel level, const std::string &message);
+        void printLog(const std::string &message, const std::string &prefix, const std::string &color);
+        std::string getCurrentDateTime();
+    };
 
     Logger::Logger(const std::string &loggerNameSpecifier)
         : loggerName(loggerNameSpecifier) {}
@@ -23,6 +57,11 @@ namespace SealLogger
         log(LogLevel::DEBUG, message);
     }
 
+    void Logger::warning(const std::string &message)
+    {
+        log(LogLevel::WARNING, message);
+    }
+
     void Logger::error(const std::string &message)
     {
         log(LogLevel::ERROR, message);
@@ -38,35 +77,37 @@ namespace SealLogger
         switch (level)
         {
         case LogLevel::INFO:
-            printLog(level, message, "INFO", "\033[1;37m");
+            printLog(message, "INFO", "\033[1;37m");
             break;
         case LogLevel::OK:
-            printLog(level, message, "OK", "\033[1;32m");
+            printLog(message, "OK", "\033[1;32m");
             break;
         case LogLevel::DEBUG:
-            printLog(level, message, "DEBUG", "\033[1;36m");
+            printLog(message, "DEBUG", "\033[1;36m");
+            break;
+        case LogLevel::WARNING:
+            printLog(message, "WARNING", "\033[1;33m");
             break;
         case LogLevel::ERROR:
-            printLog(level, message, "ERROR", "\033[1;31m");
+            printLog(message, "ERROR", "\033[1;31m");
             break;
         case LogLevel::FATAL:
-            printLog(level, message, "FATAL", "\033[1;35m");
+            printLog(message, "FATAL", "\033[1;35m");
             break;
         }
     }
 
-    void Logger::printLog(LogLevel level, const std::string &message, const std::string &prefix, const std::string &color)
+    void Logger::printLog(const std::string &message, const std::string &prefix, const std::string &color)
     {
-        (void)level;
         std::cout << getCurrentDateTime() << " [" << prefix << "] ";
 
         if (!loggerName.empty())
         {
-            std::cout << "\t[" << loggerName << "] ";
+            std::cout << "[" << loggerName << "] ";
         }
         else
         {
-            std::cout << "\t[????] ";
+            std::cout << "[NoName] ";
         }
 
         std::cout << color << message << "\033[0m" << std::endl;
@@ -82,5 +123,4 @@ namespace SealLogger
         ss << std::put_time(timeInfo, "%Y-%m-%d %H:%M:%S");
         return ss.str();
     }
-
 } // namespace SealLogger
