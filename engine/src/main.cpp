@@ -27,7 +27,7 @@ int main()
         return -1;
     }
 
-    logger.info("Window spawned successfully.");
+    logger.ok("Window spawned successfully.");
     TestHandleHook testHandleHook;
     window.attachHandleEventHook(&testHandleHook);
     logger.info("Created test handle hook.");
