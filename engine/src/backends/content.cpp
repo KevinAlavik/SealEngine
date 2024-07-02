@@ -77,4 +77,15 @@ namespace SealEngineContentManager
         exit(1);
     }
 
+    template <>
+    std::vector<std::string> SealEngineContentManager::GetAssetNamesOfType<SealEngineDraw::Texture>()
+    {
+        std::vector<std::string> assetNames;
+        for (const auto &pair : textureAssets)
+        {
+            assetNames.push_back(pair.first);
+        }
+        return assetNames;
+    }
+
 } // namespace SealEngineContentManager

@@ -63,8 +63,7 @@ namespace SealEngine
 
     void Window::Quit()
     {
-        delete window;
-        window = nullptr;
+        window->kill();
     }
 
     SealWindow::Window *Window::GetWindow()
@@ -152,5 +151,66 @@ namespace SealEngine
         return std::chrono::duration_cast<std::chrono::seconds>(
                    std::chrono::system_clock::now().time_since_epoch())
             .count();
+    }
+
+    // Sprite Manager
+    Sprite::Sprite(const std::string texture, SealEngineTypes::Vector2 pos, SealEngineTypes::Vector2 size, SealEngineContentManager::SealEngineContentManager *contentManager, SealEngineDraw::Drawer *drawer, SealEngine::Logger *logger)
+    {
+        this->texture = contentManager->GetAsset<SealEngineDraw::Texture>(texture);
+        this->position = pos;
+        this->size = size;
+        this->visible = false;
+        this->contentManager = contentManager;
+        this->drawer = drawer;
+        this->logger = logger;
+    }
+
+    Sprite::~Sprite()
+    {
+        this->texture = nullptr;
+        this->position = SealEngineTypes::Vector2(0, 0);
+        this->size = SealEngineTypes::Vector2(0, 0);
+        this->contentManager = nullptr;
+        this->drawer = nullptr;
+        this->logger = nullptr;
+        this->visible = false;
+    }
+
+    void Sprite::Hide()
+    {
+        this->visible = false;
+    }
+
+    void Sprite::Show()
+    {
+        this->visible = true;
+    }
+
+    void Sprite::SetTexture(const std::string &texture)
+    {
+        this->texture = contentManager->GetAsset<SealEngineDraw::Texture>(texture);
+    }
+
+    void Sprite::Move(SealEngineTypes::Vector2 pos)
+    {
+        this->position = pos;
+    }
+
+    void Sprite::Resize(SealEngineTypes::Vector2 size)
+    {
+        this->size = size;
+    }
+
+    void Sprite::Update()
+    {
+        if (visible)
+        {
+            texture->Draw(drawer, position.X, position.Y, &size.X, &size.Y);
+        }
+    }
+
+    SealEngineTypes::Vector2 Sprite::GetPosition() const
+    {
+        return position;
     }
 }

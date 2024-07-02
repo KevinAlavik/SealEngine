@@ -6,9 +6,18 @@
 #include "../../backends/files.h"
 #include "../../utilities/logger.h"
 #include "../../utilities/types.h"
-#include "Seal.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
+namespace SealEngine
+{
+    class Window;
+}
+
+namespace SealEngine
+{
+    class Logger;
+}
 
 namespace SealEngineDraw
 {

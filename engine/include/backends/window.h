@@ -33,6 +33,7 @@ namespace SealWindow
         void attachHandleEventHook(SealWindowHookHandleEvent *hook);
         int getWidth() const;
         int getHeight() const;
+        void kill();
         bool verbose;
 
     private:

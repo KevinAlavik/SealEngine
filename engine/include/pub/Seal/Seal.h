@@ -11,6 +11,9 @@
 #include "../../backends/content.h"
 #include "../../utilities/logger.h"
 #include "../../utilities/types.h"
+#include "../../types/vector.h"
+
+#include "Draw.h"
 
 namespace SealEngine
 {
@@ -105,6 +108,30 @@ namespace SealEngine
         static void SleepSeconds(int seconds);
         static long long GetCurrentTimeMilliseconds();
         static long long GetCurrentTimeSeconds();
+    };
+
+    // Sprite Manager
+    class Sprite
+    {
+    public:
+        Sprite(const std::string texture, SealEngineTypes::Vector2 pos, SealEngineTypes::Vector2 size, SealEngineContentManager::SealEngineContentManager *contentManager, SealEngineDraw::Drawer *drawer, SealEngine::Logger *logger);
+        ~Sprite();
+        void Hide();
+        void Show();
+        void Move(SealEngineTypes::Vector2 pos);
+        void Resize(SealEngineTypes::Vector2 size);
+        void SetTexture(const std::string &texture);
+        SealEngineTypes::Vector2 GetPosition() const;
+        void Update();
+
+    private:
+        SealEngineDraw::Texture *texture;
+        SealEngineTypes::Vector2 position;
+        SealEngineTypes::Vector2 size;
+        SealEngineContentManager::SealEngineContentManager *contentManager;
+        SealEngineDraw::Drawer *drawer;
+        SealEngine::Logger *logger;
+        bool visible;
     };
 }
 

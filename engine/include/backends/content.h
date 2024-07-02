@@ -3,14 +3,14 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include "files.h"
 #include "../utilities/logger.h"
 
-// Forward declarations becuz im to lazy to handle circular includes
 namespace SealEngineDraw
 {
     class Texture;
-};
+}
 
 namespace SealEngineContentManager
 {
@@ -29,6 +29,9 @@ namespace SealEngineContentManager
 
         template <typename T>
         T *GetAsset(const std::string &name);
+
+        template <typename T>
+        std::vector<std::string> GetAssetNamesOfType();
 
     private:
         std::unordered_map<std::string, SealEngineDraw::Texture *> textureAssets;

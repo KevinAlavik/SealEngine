@@ -141,4 +141,9 @@ namespace SealWindow
         return height;
     }
 
+    void Window::kill()
+    {
+        running = false;
+    }
+
 } // namespace SealWindow
