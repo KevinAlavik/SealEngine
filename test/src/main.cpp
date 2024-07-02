@@ -59,6 +59,7 @@ void NextTexture()
     mario->SetTexture(textureNames[curTexIdx]);
     curTexIdx = (curTexIdx + 1) % textureNames.size();
 }
+
 void Setup()
 {
     window.AttatchEventHook(keyboardHook);
@@ -67,16 +68,16 @@ void Setup()
     textureNames = contentManager.GetAssetNamesOfType<SealEngineDraw::Texture>();
 
     keyboardManager.RegisterEvent("Right", []()
-                                  { mario->Move(SealEngineTypes::Vector2(mario->GetPosition().X + STEP_SIZE, mario->GetPosition().Y)); });
+                                  { mario->Move(mario->GetPosition().Lerp(SealEngineTypes::Vector2::Vector2(mario->GetPosition().X + STEP_SIZE, mario->GetPosition().Y))); });
 
     keyboardManager.RegisterEvent("Left", []()
-                                  { mario->Move(SealEngineTypes::Vector2(mario->GetPosition().X - STEP_SIZE, mario->GetPosition().Y)); });
+                                  { mario->Move(mario->GetPosition().Lerp(SealEngineTypes::Vector2(mario->GetPosition().X - STEP_SIZE, mario->GetPosition().Y))); });
 
     keyboardManager.RegisterEvent("Up", []()
-                                  { mario->Move(SealEngineTypes::Vector2(mario->GetPosition().X, mario->GetPosition().Y - STEP_SIZE)); });
+                                  { mario->Move(mario->GetPosition().Lerp(SealEngineTypes::Vector2(mario->GetPosition().X, mario->GetPosition().Y - STEP_SIZE))); });
 
     keyboardManager.RegisterEvent("Down", []()
-                                  { mario->Move(SealEngineTypes::Vector2(mario->GetPosition().X, mario->GetPosition().Y + STEP_SIZE)); });
+                                  { mario->Move(mario->GetPosition().Lerp(SealEngineTypes::Vector2(mario->GetPosition().X, mario->GetPosition().Y + STEP_SIZE))); });
 
     keyboardManager.RegisterEvent("Space", []()
                                   { NextTexture(); });
