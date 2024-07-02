@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
+#include <vector>
+#include <mutex> // For std::mutex
 #include "../utilities/logger.h"
 #include "../utilities/types.h"
 
@@ -45,7 +47,8 @@ namespace SealWindow
         SDL_Texture *renderTexture;
         SDL_Renderer *renderer;
         SealLogger::Logger logger;
-        SealWindowHookHandleEvent *handleEventHook;
+        std::vector<SealWindowHookHandleEvent *> eventHooks;
+        std::mutex hooksMutex;
     };
 
 } // namespace SealWindow

@@ -4,7 +4,7 @@ namespace SealWindow
 {
 
     Window::Window(const std::string &windowTitle, int windowWidth, int windowHeight)
-        : verbose(false), title(windowTitle), width(windowWidth), height(windowHeight), running(false), window(nullptr), renderTexture(nullptr), renderer(nullptr), logger("SealWindow"), handleEventHook(nullptr)
+        : verbose(false), title(windowTitle), width(windowWidth), height(windowHeight), running(false), window(nullptr), renderTexture(nullptr), renderer(nullptr), logger("SealWindow")
     {
         logger.info("Window created");
     }
@@ -73,7 +73,6 @@ namespace SealWindow
 
     void Window::clear(SealEngineTypes::Color color)
     {
-
         SDL_SetRenderTarget(renderer, renderTexture);
 
         SDL_SetRenderDrawColor(renderer, color.Red(), color.Green(), color.Blue(), color.Alpha());
@@ -84,7 +83,6 @@ namespace SealWindow
 
     void Window::present()
     {
-
         SDL_RenderCopy(renderer, renderTexture, nullptr, nullptr);
         SDL_RenderPresent(renderer);
     }
@@ -104,9 +102,10 @@ namespace SealWindow
                 running = false;
             }
 
-            if (handleEventHook)
+            std::lock_guard<std::mutex> lock(hooksMutex);
+            for (auto &hook : eventHooks)
             {
-                handleEventHook->handleEventsHook(event);
+                hook->handleEventsHook(event);
             }
         }
     }
@@ -128,7 +127,9 @@ namespace SealWindow
 
     void Window::attachHandleEventHook(SealWindowHookHandleEvent *hook)
     {
-        handleEventHook = hook;
+        std::lock_guard<std::mutex> lock(hooksMutex);
+        eventHooks.push_back(hook);
+        logger.info("Event hook attached");
     }
 
     int Window::getWidth() const
