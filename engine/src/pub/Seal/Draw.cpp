@@ -8,7 +8,14 @@ namespace SealEngineDraw
     {
     }
 
-    Drawer::~Drawer() = default;
+    Drawer::~Drawer()
+    {
+        if (logger != nullptr)
+        {
+            delete logger;
+            logger = nullptr;
+        }
+    };
 
     void Drawer::PutPixel(int x, int y, SealEngineTypes::Color color)
     {
@@ -227,13 +234,17 @@ namespace SealEngineDraw
     // Texture
     Texture::Texture(std::string path, SealEngine::Logger *logger) : path(path), logger(logger)
     {
+        if (logger == nullptr)
+        {
+            logger = new SealEngine::Logger(path);
+        }
     }
 
     Texture::~Texture()
     {
     }
 
-    void Texture::Draw(Drawer *drawer, int x, int y)
+    void Texture::Draw(Drawer *drawer, int x, int y, int *width, int *height)
     {
         SDL_Renderer *renderer = drawer->GetWindow()->GetWindow()->getRenderer();
         SDL_Texture *renderTexture = drawer->GetWindow()->GetWindow()->getRendererTexture();
@@ -258,8 +269,8 @@ namespace SealEngineDraw
         SDL_Rect destination;
         destination.x = x;
         destination.y = y;
-        destination.w = surface->w;
-        destination.h = surface->h;
+        destination.w = (width != nullptr) ? *width : surface->w;
+        destination.h = (height != nullptr) ? *height : surface->h;
 
         SDL_FreeSurface(surface);
 

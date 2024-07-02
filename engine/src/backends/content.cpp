@@ -1,4 +1,5 @@
 #include <backends/content.h>
+#include <pub/Seal/Draw.h>
 #include <stdexcept>
 
 namespace SealEngineContentManager
@@ -14,26 +15,21 @@ namespace SealEngineContentManager
         {
             delete pair.second;
         }
+
         textureAssets.clear();
 
-        for (auto &pair : soundAssets)
+        if (logger != nullptr)
         {
-            delete pair.second;
+            delete logger;
+            logger = nullptr;
         }
-        soundAssets.clear();
-
-        delete logger;
     }
 
     void SealEngineContentManager::RegisterAsset(const std::string &path, const std::string &name, const AssetTypes type)
     {
         if (type == AssetTypes::TEXTURE)
         {
-            textureAssets[name] = new SealFileManager::File(path);
-        }
-        else if (type == AssetTypes::SOUND)
-        {
-            soundAssets[name] = new SealFileManager::File(path);
+            textureAssets[name] = new SealEngineDraw::Texture(path);
         }
 
         if (logger)
@@ -53,15 +49,6 @@ namespace SealEngineContentManager
                 textureAssets.erase(it);
             }
         }
-        else if (type == AssetTypes::SOUND)
-        {
-            auto it = soundAssets.find(name);
-            if (it != soundAssets.end())
-            {
-                delete it->second;
-                soundAssets.erase(it);
-            }
-        }
 
         if (logger)
         {
@@ -69,25 +56,16 @@ namespace SealEngineContentManager
         }
     }
 
-    SealFileManager::File *SealEngineContentManager::GetAsset(const std::string &name, const AssetTypes type)
+    template <>
+    SealEngineDraw::Texture *SealEngineContentManager::GetAsset<SealEngineDraw::Texture>(const std::string &name)
     {
-        if (type == AssetTypes::TEXTURE)
+        auto it = textureAssets.find(name);
+        if (it != textureAssets.end())
         {
-            auto it = textureAssets.find(name);
-            if (it != textureAssets.end())
-            {
-                return it->second;
-            }
-        }
-        else if (type == AssetTypes::SOUND)
-        {
-            auto it = soundAssets.find(name);
-            if (it != soundAssets.end())
-            {
-                return it->second;
-            }
+            return it->second;
         }
 
-        throw std::runtime_error("Asset not found: " + name);
+        throw std::runtime_error("Texture asset not found: " + name);
     }
+
 } // namespace SealEngineContentManager

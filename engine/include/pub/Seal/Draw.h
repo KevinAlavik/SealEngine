@@ -40,9 +40,9 @@ namespace SealEngineDraw
     class Texture
     {
     public:
-        Texture(std::string path, SealEngine::Logger *logger);
+        Texture(std::string path, SealEngine::Logger *logger = nullptr);
         ~Texture();
-        void Draw(Drawer *drawer, int x, int y);
+        void Draw(Drawer *drawer, int x, int y, int *width = nullptr, int *height = nullptr);
 
     private:
         std::string path;

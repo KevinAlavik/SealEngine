@@ -10,8 +10,16 @@ namespace SealEngine
 
     Window::~Window()
     {
-        delete window;
-        delete logger;
+        if (window != nullptr)
+        {
+            delete window;
+            window = nullptr;
+        }
+        if (logger != nullptr)
+        {
+            delete logger;
+            logger = nullptr;
+        }
     }
 
     void Window::Spawn(std::function<void()> setupFunction, std::function<void()> updateFunction)
@@ -81,8 +89,6 @@ namespace SealEngine
 
     Logger::~Logger()
     {
-        delete logger;
-        logger = nullptr;
     }
 
     void Logger::Log(LogLevel level, const std::string &message)

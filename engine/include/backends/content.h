@@ -3,16 +3,20 @@
 
 #include <string>
 #include <unordered_map>
-#include <vector>
 #include "files.h"
 #include "../utilities/logger.h"
+
+// Forward declarations becuz im to lazy to handle circular includes
+namespace SealEngineDraw
+{
+    class Texture;
+};
 
 namespace SealEngineContentManager
 {
     enum class AssetTypes
     {
-        TEXTURE,
-        SOUND
+        TEXTURE
     };
 
     class SealEngineContentManager
@@ -21,14 +25,18 @@ namespace SealEngineContentManager
         SealEngineContentManager(const std::string &name);
         ~SealEngineContentManager();
         void RegisterAsset(const std::string &path, const std::string &name, const AssetTypes type);
-        SealFileManager::File *GetAsset(const std::string &name, const AssetTypes type);
         void UnregisterAsset(const std::string &name, const AssetTypes type);
 
+        template <typename T>
+        T *GetAsset(const std::string &name);
+
     private:
-        std::unordered_map<std::string, SealFileManager::File *> textureAssets;
-        std::unordered_map<std::string, SealFileManager::File *> soundAssets;
+        std::unordered_map<std::string, SealEngineDraw::Texture *> textureAssets;
         SealLogger::Logger *logger;
     };
+
+    template <>
+    SealEngineDraw::Texture *SealEngineContentManager::GetAsset<SealEngineDraw::Texture>(const std::string &name);
 
 } // namespace SealEngineContentManager
 

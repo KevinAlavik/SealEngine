@@ -8,8 +8,8 @@ TARGET := $(BIN_DIR)/$(GAME_NAME)
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -Wextra -pedantic -std=c++11 -I../engine/include/pub -fsanitize=address -O3
-LDFLAGS := -L$(LIB_DIR) -lsealengine -fsanitize=address
+CXXFLAGS := -Wall -Wextra -pedantic -std=c++11 -I../engine/include/pub -O3
+LDFLAGS := -L$(LIB_DIR) -lsealengine 
 
 # Directories
 SRC_DIR := src
