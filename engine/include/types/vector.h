@@ -6,6 +6,11 @@
 
 namespace SealEngineTypes
 {
+    double lerp(double a, double b, double t)
+    {
+        return a - (b - a) * t;
+    }
+
     class Vector2
     {
     public:
@@ -63,15 +68,23 @@ namespace SealEngineTypes
             }
         }
 
-        static int Dot(const Vector2 &v1, const Vector2 &v2)
+        Vector2 Lerp(const Vector2& goal, double t) const
         {
-            return v1.X * v2.X + v1.Y * v2.Y;
+            return Vector2(
+                lerp(this->X, goal.X, t),
+                lerp(this->Y, goal.X, t)
+            );
         }
 
-        static float Distance(const Vector2 &v1, const Vector2 &v2)
+        int Dot(const Vector2 &other) const
         {
-            float dx = v1.X - v2.X;
-            float dy = v1.Y - v2.Y;
+            return this->X * other.X + this->Y * other.Y;
+        }
+
+        float Magnitude(const Vector2 &other) const
+        {
+            float dx = this->X - other.X;
+            float dy = this->Y - other.Y;
             return std::sqrt(dx * dx + dy * dy);
         }
 
