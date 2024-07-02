@@ -1,6 +1,7 @@
 #include <backends/content.h>
 #include <pub/Seal/Draw.h>
 #include <stdexcept>
+#include <stdlib.h>
 
 namespace SealEngineContentManager
 {
@@ -65,13 +66,15 @@ namespace SealEngineContentManager
             return it->second;
         }
 
-        auto defaultTextureIt = textureAssets.find("no_texture");
+        auto defaultTextureIt = textureAssets.find("missing_texture");
         if (defaultTextureIt != textureAssets.end())
         {
+            logger->warning("Texture \"" + name + "\" doesnt exist");
             return defaultTextureIt->second;
         }
 
-        throw std::runtime_error("Texture \"" + name + "\" not found! We didnt even find \"no_texture\" texture so something is wrong!");
+        logger->fatal("Texture \"" + name + "\" not found! We didnt even find \"missing_texture\".");
+        exit(1);
     }
 
 } // namespace SealEngineContentManager

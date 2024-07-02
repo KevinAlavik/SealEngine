@@ -1,3 +1,4 @@
+#include <utilities/logger.h>
 #include <iostream>
 #include <chrono>
 #include <iomanip>
@@ -6,37 +7,6 @@
 
 namespace SealLogger
 {
-    enum class LogLevel
-    {
-        INFO,
-        OK,
-        DEBUG,
-        WARNING,
-        ERROR,
-        FATAL
-    };
-
-    class Logger
-    {
-    public:
-        Logger(const std::string &loggerNameSpecifier = "");
-        ~Logger();
-
-        void info(const std::string &message);
-        void ok(const std::string &message);
-        void debug(const std::string &message);
-        void warning(const std::string &message);
-        void error(const std::string &message);
-        void fatal(const std::string &message);
-
-    private:
-        std::string loggerName;
-
-        void log(LogLevel level, const std::string &message);
-        void printLog(const std::string &message, const std::string &prefix, const std::string &color);
-        std::string getCurrentDateTime();
-    };
-
     Logger::Logger(const std::string &loggerNameSpecifier)
         : loggerName(loggerNameSpecifier) {}
 

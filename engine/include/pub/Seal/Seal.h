@@ -85,6 +85,7 @@ namespace SealEngine
             OK,
             DEBUG,
             ERROR,
+            WARNING,
             FATAL
         };
 

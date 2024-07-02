@@ -115,6 +115,9 @@ namespace SealEngine
         case SealEngine::Logger::LogLevel::FATAL:
             logger->fatal(message);
             break;
+        case SealEngine::Logger::LogLevel::WARNING:
+            logger->warning(message);
+            break;
         default:
             logger->error("Unknown log level.");
             break;

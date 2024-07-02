@@ -16,6 +16,7 @@ namespace SealLogger
         OK,
         DEBUG,
         ERROR,
+        WARNING,
         FATAL
     };
 
@@ -29,6 +30,7 @@ namespace SealLogger
         void ok(const std::string &message);
         void debug(const std::string &message);
         void error(const std::string &message);
+        void warning(const std::string &message);
         void fatal(const std::string &message);
 
     private:

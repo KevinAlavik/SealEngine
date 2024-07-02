@@ -22,26 +22,29 @@ SealEngine::KeyboardEvent *keyboardHook = new SealEngine::KeyboardEvent;
 
 // Textures
 SealEngineDraw::Texture *mario;
-SealEngineDraw::Texture *no_texture;
+SealEngineDraw::Texture *missing_texture;
 
+// Window stuff
 int w = window.GetWindowWidth();
 int h = window.GetWindowHeight();
+int verbose = window.GetWindow()->verbose = false;
 
-int playerWidth = 32;
-int playerHeight = 32;
-
+// Function to load assets (duh)
 void LoadAssets()
 {
-    contentManager.RegisterAsset("assets/textures/no_texture.png", "no_texture", SealEngineContentManager::AssetTypes::TEXTURE);
+    contentManager.RegisterAsset("assets/textures/missing_texture.png", "missing_texture", SealEngineContentManager::AssetTypes::TEXTURE);
     contentManager.RegisterAsset("assets/textures/mario.png", "mario", SealEngineContentManager::AssetTypes::TEXTURE);
 
     mario = contentManager.GetAsset<SealEngineDraw::Texture>("mario");
-    no_texture = contentManager.GetAsset<SealEngineDraw::Texture>("no_texture");
+    missing_texture = contentManager.GetAsset<SealEngineDraw::Texture>("missing_texture");
 }
 
+// Mario settings
 #define STEP_SIZE 10
 int marioX = 0;
 int marioY = 0;
+int playerWidth = 32;
+int playerHeight = 32;
 
 void Setup()
 {
