@@ -39,10 +39,7 @@ void LoadAssets()
     no_texture = contentManager.GetAsset<SealEngineDraw::Texture>("no_texture");
 }
 
-// KeyboardManager class definition
-
 #define STEP_SIZE 10
-
 int marioX = 0;
 int marioY = 0;
 
