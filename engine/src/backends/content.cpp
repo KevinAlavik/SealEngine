@@ -65,7 +65,13 @@ namespace SealEngineContentManager
             return it->second;
         }
 
-        throw std::runtime_error("Texture asset not found: " + name);
+        auto defaultTextureIt = textureAssets.find("no_texture");
+        if (defaultTextureIt != textureAssets.end())
+        {
+            return defaultTextureIt->second;
+        }
+
+        throw std::runtime_error("Texture \"" + name + "\" not found! We didnt even find \"no_texture\" texture so something is wrong!");
     }
 
 } // namespace SealEngineContentManager
