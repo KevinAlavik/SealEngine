@@ -8,8 +8,8 @@ TARGET := $(BIN_DIR)/$(GAME_NAME)
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -Wextra -pedantic -std=c++11 -I../engine/include/pub -O3
-LDFLAGS := -L$(LIB_DIR) -lsealengine 
+CXXFLAGS := -Wall -Wextra -pedantic -std=c++11 -I../engine/include/pub -O3 $(shell sdl2-config --cflags)
+LDFLAGS := -L$(LIB_DIR) -lsealengine $(shell sdl2-config --libs)
 
 # Directories
 SRC_DIR := src

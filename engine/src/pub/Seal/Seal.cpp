@@ -82,6 +82,11 @@ namespace SealEngine
         return window->getHeight();
     }
 
+    void Window::AttatchEventHook(SealWindow::SealWindowHookHandleEvent *hook)
+    {
+        window->attachHandleEventHook(hook);
+    }
+
     // Logger
     Logger::Logger(const std::string &name) : logger(new SealLogger::Logger(name))
     {

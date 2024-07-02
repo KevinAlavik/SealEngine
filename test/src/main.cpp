@@ -2,45 +2,70 @@
 #include <Seal/Draw.h>
 #include <Seal/Types.h>
 
-// Handlers
+#include <SDL2/SDL.h>
+#include <unordered_map>
+#include <functional>
+
+// Function prototypes
+void PrintKeyInfo(SDL_Event *event);
+void PrintModifiers(Uint16 mod);
+
+// Logger, window, drawer, and content manager setup
 SealEngine::Logger logger("TestGame");
 SealEngine::Window window("Test Game", 800, 600);
 SealEngineDraw::Drawer drawer(&window, new SealEngine::Logger("GameDrawer"));
 SealEngineContentManager::SealEngineContentManager contentManager("GameContentManager");
 
+// Hooks / Handlers
+SealEngine::Keyboard keyboardManager;
+SealEngine::KeyboardEvent *keyboardHook = new SealEngine::KeyboardEvent;
+
 // Textures
 SealEngineDraw::Texture *mario;
 SealEngineDraw::Texture *no_texture;
 
-// Window width and height
 int w = window.GetWindowWidth();
 int h = window.GetWindowHeight();
 
-// Config
 int playerWidth = 32;
 int playerHeight = 32;
 
 void LoadAssets()
 {
-    // Register textures into the content manager
     contentManager.RegisterAsset("assets/textures/no_texture.png", "no_texture", SealEngineContentManager::AssetTypes::TEXTURE);
     contentManager.RegisterAsset("assets/textures/mario.png", "mario", SealEngineContentManager::AssetTypes::TEXTURE);
 
-    // Load the textures
     mario = contentManager.GetAsset<SealEngineDraw::Texture>("mario");
     no_texture = contentManager.GetAsset<SealEngineDraw::Texture>("no_texture");
 }
 
+// KeyboardManager class definition
+
+#define STEP_SIZE 10
+
+int marioX = 0;
+int marioY = 0;
+
 void Setup()
 {
-    window.Clear(SealEngineTypes::Color(255));
+    window.AttatchEventHook(keyboardHook);
+
     LoadAssets();
+
+    keyboardManager.RegisterEvent("Right", []()
+                                  { marioX += STEP_SIZE; });
+    keyboardManager.RegisterEvent("Left", []()
+                                  { marioX -= STEP_SIZE; });
+    keyboardManager.RegisterEvent("Up", []()
+                                  { marioY -= STEP_SIZE; });
+    keyboardManager.RegisterEvent("Down", []()
+                                  { marioY += STEP_SIZE; });
 }
 
 void Update()
 {
     window.Clear(SealEngineTypes::Color(255));
-    mario->Draw(&drawer, 0, 0, &playerWidth, &playerHeight);
+    mario->Draw(&drawer, marioX, marioY, &playerWidth, &playerHeight);
 }
 
 void Cleanup()
