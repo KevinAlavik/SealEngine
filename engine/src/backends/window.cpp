@@ -4,16 +4,18 @@ namespace SealWindow
 {
 
     Window::Window(const std::string &windowTitle, int windowWidth, int windowHeight)
-        : verbose(false), title(windowTitle), width(windowWidth), height(windowHeight), running(false), window(nullptr), renderer(nullptr), logger("SealWindow"), handleEventHook(nullptr), presentHook(nullptr)
+        : verbose(false), title(windowTitle), width(windowWidth), height(windowHeight), running(false), window(nullptr), renderTexture(nullptr), renderer(nullptr), logger("SealWindow"), handleEventHook(nullptr)
     {
-        if (SDL_Init(SDL_INIT_VIDEO) < 0)
-        {
-            logger.error("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
-        }
+        logger.info("Window created");
     }
 
     Window::~Window()
     {
+        if (renderTexture)
+        {
+            SDL_DestroyTexture(renderTexture);
+            renderTexture = nullptr;
+        }
         if (renderer)
         {
             SDL_DestroyRenderer(renderer);
@@ -24,8 +26,6 @@ namespace SealWindow
             SDL_DestroyWindow(window);
             window = nullptr;
         }
-        SDL_Quit();
-        running = false;
     }
 
     bool Window::spawn()
@@ -37,10 +37,31 @@ namespace SealWindow
             return false;
         }
 
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
         if (!renderer)
         {
             logger.error("Renderer could not be created! SDL_Error: " + std::string(SDL_GetError()));
+            SDL_DestroyWindow(window);
+            window = nullptr;
+            return false;
+        }
+
+        renderTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+        if (!renderTexture)
+        {
+            logger.error("Failed to create render texture! SDL_Error: " + std::string(SDL_GetError()));
+            SDL_DestroyRenderer(renderer);
+            renderer = nullptr;
+            SDL_DestroyWindow(window);
+            window = nullptr;
+            return false;
+        }
+
+        if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_WEBP))
+        {
+            logger.error("Failed to initialize SDL_Image! SDL_Error: " + std::string(SDL_GetError()));
+            SDL_DestroyRenderer(renderer);
+            renderer = nullptr;
             SDL_DestroyWindow(window);
             window = nullptr;
             return false;
@@ -50,20 +71,22 @@ namespace SealWindow
         return true;
     }
 
-    void Window::clear(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    void Window::clear(SealEngineTypes::Color color)
     {
-        SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
+        SDL_SetRenderTarget(renderer, renderTexture);
+
+        SDL_SetRenderDrawColor(renderer, color.Red(), color.Green(), color.Blue(), color.Alpha());
         SDL_RenderClear(renderer);
+
+        SDL_SetRenderTarget(renderer, nullptr);
     }
 
     void Window::present()
     {
-        SDL_RenderPresent(renderer);
 
-        if (presentHook)
-        {
-            presentHook->presentHook();
-        }
+        SDL_RenderCopy(renderer, renderTexture, nullptr, nullptr);
+        SDL_RenderPresent(renderer);
     }
 
     bool Window::isRunning() const
@@ -98,14 +121,14 @@ namespace SealWindow
         return renderer;
     }
 
+    SDL_Texture *Window::getRendererTexture() const
+    {
+        return renderTexture;
+    }
+
     void Window::attachHandleEventHook(SealWindowHookHandleEvent *hook)
     {
         handleEventHook = hook;
-    }
-
-    void Window::attachPresentHook(SealWindowHookPresent *hook)
-    {
-        presentHook = hook;
     }
 
     int Window::getWidth() const

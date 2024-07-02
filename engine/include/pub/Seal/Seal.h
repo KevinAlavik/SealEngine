@@ -6,7 +6,9 @@
 #include <thread>
 
 #include "../../backends/window.h"
+#include "../../backends/content.h"
 #include "../../utilities/logger.h"
+#include "../../utilities/types.h"
 
 namespace SealEngine
 {
@@ -16,6 +18,7 @@ namespace SealEngine
         Window(const std::string &windowTitle, int windowWidth, int windowHeight);
         ~Window();
         void Spawn(std::function<void()> setupFunction, std::function<void()> updateFunction);
+        void Clear(SealEngineTypes::Color color);
         void Quit();
         SealWindow::Window *GetWindow();
         int GetWindowWidth() const;
@@ -41,6 +44,7 @@ namespace SealEngine
         Logger(const std::string &name);
         ~Logger();
         void Log(LogLevel level, const std::string &message);
+        SealLogger::Logger *GetLogger();
 
     private:
         SealLogger::Logger *logger;

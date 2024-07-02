@@ -6,7 +6,6 @@ namespace SealEngine
     Window::Window(const std::string &title, int windowWidth, int windowHeight)
         : window(new SealWindow::Window(title, windowWidth, windowHeight)), logger(new SealLogger::Logger("SealWindow"))
     {
-        window->clear(0, 0, 0, 255);
     }
 
     Window::~Window()
@@ -47,6 +46,11 @@ namespace SealEngine
             if (window->verbose)
                 logger->debug(fpsString);
         }
+    }
+
+    void Window::Clear(SealEngineTypes::Color color)
+    {
+        window->clear(color);
     }
 
     void Window::Quit()
@@ -104,6 +108,11 @@ namespace SealEngine
             logger->error("Unknown log level.");
             break;
         }
+    }
+
+    SealLogger::Logger *Logger::GetLogger()
+    {
+        return logger;
     }
 
     // Timer
