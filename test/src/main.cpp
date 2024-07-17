@@ -6,10 +6,6 @@
 #include <unordered_map>
 #include <functional>
 
-// Function prototypes
-void PrintKeyInfo(SDL_Event *event);
-void PrintModifiers(Uint16 mod);
-
 // Logger, window, drawer, and content manager setup
 SealEngine::Logger logger("TestGame");
 SealEngine::Window window("Test Game", 800, 600);
